@@ -30,19 +30,20 @@ int main(int argc, char** argv) {
   mpc_parser_t* Kulli    = mpc_new("kulli");
 
   mpca_lang(MPCA_LANG_DEFAULT,
-      "                                                    \
-        number   : /-?[0-9]+/ ;                            \
-        operator : '+' | '-' | '*' | '/' | '%' ;           \
-        expr     : <number> | '(' <operator> <expr>+ ')' ; \
-        kulli    : /^/ <operator> <expr>+ /$/ ;            \
+      "                                                     \
+        number   : /-?[0-9]+/ ;                             \
+        operator : '+' | '-' | '*' | '/' | '%' ;            \
+        expr     : <number> | '(' <operator> <expr>+ ')' ;  \
+        kulli    : /^/ <operator> <expr>+ /$/ ;             \
       ",
       Number, Operator, Expr, Kulli);
 
   puts("Kulli Version 0.0.0.0.1");
-  puts("Press Ctrl+c to exit\n");
+  puts("Press Ctrl+d to exit\n");
 
   while (1) {
     char* input = readline("kulli> ");
+    if (!input) break;
     add_history(input);
 
     mpc_result_t r;
