@@ -30,11 +30,11 @@ int main(int argc, char** argv) {
   mpc_parser_t* Kulli    = mpc_new("kulli");
 
   mpca_lang(MPCA_LANG_DEFAULT,
-      "                                                     \
-        number   : /-?[0-9]+/ ;                             \
-        operator : '+' | '-' | '*' | '/' | '%' ;            \
-        expr     : <number> | '(' <operator> <expr>+ ')' ;  \
-        kulli    : /^/ <operator> <expr>+ /$/ ;             \
+      "                                                                         \
+        number   : /-?[0-9]+(\\.[0-9]*)?/ ;                                     \
+        operator : '+' | '-' | '*' | '/' | '%' ;                                \
+        expr     : <number> | <operator> <expr>+ | '(' <operator> <expr>+ ')' ; \
+        kulli    : /^/ <expr> /$/ ;                                             \
       ",
       Number, Operator, Expr, Kulli);
 
