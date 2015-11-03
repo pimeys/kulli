@@ -10,9 +10,9 @@ lfn operators[] = {
   { .name = "%", .fn = &mod }
 };
 
-lval eval_op(lval x, char* op, lval y) {
-  if (x.type == LVAL_ERR) { return x; }
-  if (y.type == LVAL_ERR) { return y; }
+lval eval_op(lval* x, char* op, lval* y) {
+  if (x->type == LVAL_ERR) { return *x; }
+  if (y->type == LVAL_ERR) { return *y; }
 
   int op_len = sizeof(operators) / sizeof(*operators);
 
@@ -20,7 +20,7 @@ lval eval_op(lval x, char* op, lval y) {
     lfn fn = operators[i];
 
     if (strcmp(fn.name, op) == 0) {
-      return fn.fn(&x, &y);
+      return fn.fn(x, y);
     }
   }
 
@@ -39,7 +39,8 @@ lval eval(mpc_ast_t* t) {
 
   int i = 3;
   while (strstr(t->children[i]->tag, "expr")) {
-    x = eval_op(x, op, eval(t->children[i]));
+    lval y = eval(t->children[i]);
+    x = eval_op(&x, op, &y);
     i++;
   }
 
