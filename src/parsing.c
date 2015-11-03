@@ -12,11 +12,11 @@ int main(int argc, char** argv) {
   mpc_parser_t* Kulli    = mpc_new("kulli");
 
   mpca_lang(MPCA_LANG_DEFAULT,
-      "                                                     \
-        number   : /-?[0-9]+(\\.[0-9]*)?/ ;                                     \
+      "                                                                         \
+        number   : /-?[0-9]+/ ;                                                 \
         operator : '+' | '-' | '*' | '/' | '%' ;                                \
-        expr     : <number> | <operator> <expr>+ | '(' <operator> <expr>+ ')' ; \
-        kulli    : /^/ <expr> /$/ ;                                             \
+        expr     : <number> | '(' <operator> <expr>+ ')' ;                      \
+        kulli    : /^/ <operator> <expr>+ /$/ ;                                 \
       ",
       Number, Operator, Expr, Kulli);
 
