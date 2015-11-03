@@ -11,7 +11,7 @@ typedef struct {
 
 typedef struct {
   char* name;
-  lval (*fn)(lval* x, lval* y);
+  lval (*fn)(const lval* x, const lval* y);
 } lfn;
 
 lval lval_num(long x);

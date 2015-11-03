@@ -1,27 +1,27 @@
 #include "builtin_functions.h"
 #include "lval.h"
 
-lval sum(lval* x, lval* y)
+lval lfn_sum(const lval* x, const lval* y)
 {
   return lval_num(x->num + y->num);
 }
 
-lval subtract(lval* x, lval* y)
+lval lfn_sub(const lval* x, const lval* y)
 {
   return lval_num(x->num - y->num);
 }
 
-lval mul(lval* x, lval* y)
+lval lfn_mul(const lval* x, const lval* y)
 {
   return lval_num(x->num * y->num);
 }
 
-lval divide(lval* x, lval* y)
+lval lfn_div(const lval* x, const lval* y)
 {
   return y->num ? lval_num(x->num / y->num) : lval_err(LERR_DIV_ZERO);
 }
 
-lval mod(lval* x, lval* y)
+lval lfn_mod(const lval* x, const lval* y)
 {
   return y->num ? lval_num(x->num % y->num) : lval_err(LERR_DIV_ZERO);
 }

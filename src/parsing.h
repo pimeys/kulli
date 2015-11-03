@@ -3,5 +3,5 @@
 #include "lval.h"
 
 int main(int argc, char** argv);
-lval eval_op(lval x, char* op, lval y);
-lval eval(mpc_ast_t* t);
+lval eval_op(const lval* x, const char* op, const lval* y);
+lval eval(const mpc_ast_t* t);

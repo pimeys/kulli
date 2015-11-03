@@ -2,8 +2,8 @@
 
 #include "lval.h"
 
-lval sum(lval* x, lval* y);
-lval subtract(lval* x, lval* y);
-lval mul(lval* x, lval* y);
-lval divide(lval* x, lval* y);
-lval mod(lval* x, lval* y);
+lval lfn_sum(const lval* x, const lval* y);
+lval lfn_sub(const lval* x, const lval* y);
+lval lfn_mul(const lval* x, const lval* y);
+lval lfn_div(const lval* x, const lval* y);
+lval lfn_mod(const lval* x, const lval* y);
