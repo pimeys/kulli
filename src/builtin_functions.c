@@ -1,5 +1,5 @@
-#define LASSERT(args, cond, err)                \
-  if (!(cond)) { lval_del(args); return lval_err(err); }
+#define LCHECK(args, cond, err)                \
+  do { if (!(cond)) { lval_del(args); return lval_err(err); } } while (0);
 
 #include "builtin_functions.h"
 #include "lval.h"
@@ -31,11 +31,11 @@ lval* builtin_mod(const lval* x, const lval* y)
 }
 
 lval* builtin_head(lval* a) {
-  LASSERT(a, a->count == 1,
+  LCHECK(a, a->count == 1,
           "Function 'head' passed too many arguments!");
-  LASSERT(a, a->cell[0]->type == LVAL_QEXPR,
+  LCHECK(a, a->cell[0]->type == LVAL_QEXPR,
           "Function 'head' passed incorrect type!");
-  LASSERT(a, a->cell[0]->count > 0,
+  LCHECK(a, a->cell[0]->count > 0,
           "Function 'head' cannot operate on empty list!")
 
   lval* v = lval_take(a, 0);
@@ -44,11 +44,11 @@ lval* builtin_head(lval* a) {
 }
 
 lval* builtin_tail(lval* a) {
-  LASSERT(a, a->count == 1,
+  LCHECK(a, a->count == 1,
           "Function 'head' passed too many arguments!");
-  LASSERT(a, a->cell[0]->type == LVAL_QEXPR,
+  LCHECK(a, a->cell[0]->type == LVAL_QEXPR,
           "Function 'head' passed incorrect type!");
-  LASSERT(a, a->cell[0]->count > 0,
+  LCHECK(a, a->cell[0]->count > 0,
           "Function 'head' cannot operate on empty list!")
 
   lval* v = lval_take(a, 0);
@@ -63,9 +63,9 @@ lval* builtin_list(lval* a) {
 }
 
 lval* builtin_eval(lval* a) {
-  LASSERT(a, a->count == 1,
+  LCHECK(a, a->count == 1,
           "Function 'head' passed too many arguments!");
-  LASSERT(a, a->cell[0]->type == LVAL_QEXPR,
+  LCHECK(a, a->cell[0]->type == LVAL_QEXPR,
           "Function 'head' passed incorrect type!");
 
   lval* x = lval_take(a, 0);
@@ -75,7 +75,7 @@ lval* builtin_eval(lval* a) {
 
 lval* builtin_join(lval* a) {
   for (int i = 0; i < a->count; i++) {
-    LASSERT(a, a->cell[i]->type == LVAL_QEXPR,
+    LCHECK(a, a->cell[i]->type == LVAL_QEXPR,
             "Function 'join' passed incorrect type.");
   }
 

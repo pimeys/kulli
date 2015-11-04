@@ -101,7 +101,7 @@ lval* lval_add(lval* v, lval* x) {
 lval* lval_pop(lval* v, int i) {
   lval* x = v->cell[i];
 
-  memmove(&v->cell[i], &v->cell[i + 1], sizeof(lval*) * (v->count - i - 1));
+  memmove(&v->cell[i], &v->cell[i + 1], sizeof(v->cell[i]) * (v->count - i - 1));
 
   v->count--;
   v->cell = realloc(v->cell, sizeof(lval*) * v->count);
