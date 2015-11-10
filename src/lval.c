@@ -304,7 +304,7 @@ lval* lenv_get(lenv* e, lval* k) {
   if (e->par) {
     return lenv_get(e->par, k);
   } else {
-    return lval_err("Unbound Synmbol '%s'", k->sym);
+    return lval_err("Unbound symbol '%s'", k->sym);
   }
 }
 
