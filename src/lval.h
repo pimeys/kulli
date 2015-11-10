@@ -3,17 +3,29 @@
 #include "mpc.h"
 #include <stdint.h>
 
-enum { LVAL_ERR, LVAL_NUM, LVAL_SYM, LVAL_SEXPR, LVAL_QEXPR };
-enum { LERR_DIV_ZERO, LERR_BAD_OP, LERR_BAD_NUM };
+enum { LVAL_ERR, LVAL_NUM, LVAL_SYM, LVAL_SEXPR, LVAL_QEXPR, LVAL_FUN };
 
-typedef struct lval {
+struct lval;
+struct lenv;
+typedef struct lval lval;
+typedef struct lenv lenv;
+typedef lval*(*lbuiltin)(lenv*, lval*);
+
+struct lval {
   int type;
   uint64_t num;
   char* err;
   char* sym;
+  lbuiltin fun;
   int count;
-  struct lval** cell;
-} lval;
+  lval** cell;
+};
+
+struct lenv {
+  int count;
+  char** syms;
+  lval** vals;
+};
 
 typedef struct lop {
   char* name;
@@ -25,8 +37,9 @@ typedef struct lfn {
   lval* (*fn)(lval* a);
 } lfn;
 
+
 lval* lval_num(uint64_t x);
-lval* lval_err(const char* m);
+lval* lval_err(const char* fmt, ...);
 lval* lval_sym(const char* s);
 lval* lval_sexpr(void);
 lval* lval_qexpr(void);
@@ -36,7 +49,15 @@ lval* lval_add(lval* v, lval* x);
 lval* lval_pop(lval* v, int i);
 lval* lval_take(lval* v, int i);
 lval* lval_join(lval* x, lval* y);
+lval* lval_copy(lval* v);
 void lval_del(lval* v);
 void lval_expr_print(const lval *v, char open, char close);
 void lval_print(const lval* v);
 void lval_println(const lval* v);
+lenv* lenv_new(void);
+void lenv_del(lenv* e);
+lval* lenv_get(lenv* e, lval* k);
+void lenv_put(lenv* e, lval* k, lval* v);
+void lenv_add_builtin(lenv* e, char* name, lbuiltin func);
+void lenv_add_builtins(lenv* e);
+char* ltype_name(int t);
