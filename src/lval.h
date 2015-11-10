@@ -16,12 +16,16 @@ struct lval {
   uint64_t num;
   char* err;
   char* sym;
-  lbuiltin fun;
+  lbuiltin builtin;
+  lenv* env;
+  lval* formals;
+  lval* body;
   int count;
   lval** cell;
 };
 
 struct lenv {
+  lenv* par;
   int count;
   char** syms;
   lval** vals;
@@ -61,3 +65,7 @@ void lenv_put(lenv* e, lval* k, lval* v);
 void lenv_add_builtin(lenv* e, char* name, lbuiltin func);
 void lenv_add_builtins(lenv* e);
 char* ltype_name(int t);
+lval* lval_lambda(lval* formals, lval* body);
+lenv* lenv_copy(lenv* e);
+void lenv_def(lenv* e, lval* k, lval* v);
+lval* lval_call(lenv* e, lval* f, lval* a);

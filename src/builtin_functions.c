@@ -131,25 +131,59 @@ lval* builtin_op(lenv* e, lval* a, char* op) {
 }
 
 lval* builtin_def(lenv* e, lval* a) {
-  LCHECK(a, a->cell[0]->type == LVAL_QEXPR,
-          "Function 'def' passed incorrect type!");
+  return builtin_var(e, a, "def");
+}
+
+lval* builtin_put(lenv* e, lval* a) {
+  return builtin_var(e, a, "=");
+}
+
+lval* builtin_var(lenv* e, lval* a, char* func) {
+  LCHECK_TYPE(func, a, 0, LVAL_QEXPR);
 
   lval* syms = a->cell[0];
 
   for (int i = 0; i < syms->count; i++) {
-    LCHECK(a, syms->cell[i]->type == LVAL_SYM,
-           "Function 'def' cannot define non-symbol");
+    LCHECK(a, (syms->cell[i]->type == LVAL_SYM),
+           "Function '%s' cannot define non-symbol."
+           "Got %s, expected %s.", func,
+           ltype_name(syms->cell[i]->type),
+           ltype_name(LVAL_SYM));
   }
 
   LCHECK(a, syms->count == a->count-1,
-         "Function 'def' cannot define incorrect "
-         "number of values to symbols");
+         "Function '%s' passed too many arguments for symbols. "
+         "Got %i, expected %i.", func, syms->count, a->count-1);
 
   for (int i = 0; i < syms->count; i++) {
-    lenv_put(e, syms->cell[i], a->cell[i+1]);
+    if (strcmp(func, "def") == 0) {
+      lenv_def(e, syms->cell[i], a->cell[i+1]);
+    }
+
+    if (strcmp(func, "=") == 0) {
+      lenv_put(e, syms->cell[i], a->cell[i+1]);
+    }
   }
 
   lval_del(a);
 
   return lval_sexpr();
+}
+
+lval* builtin_lambda(lenv* e, lval* a) {
+  LCHECK_NUM("\\", a, 2);
+  LCHECK_TYPE("\\", a, 0, LVAL_QEXPR);
+  LCHECK_TYPE("\\", a, 1, LVAL_QEXPR);
+
+  for (int i = 0; i < a->cell[0]->count; i++) {
+    LCHECK(a, (a->cell[0]->cell[i]->type == LVAL_SYM),
+           "Cannot define non-symbol. Got %s, expected %s.",
+           ltype_name(a->cell[0]->cell[i]->type), ltype_name(LVAL_SYM));
+  }
+
+  lval* formals = lval_pop(a, 0);
+  lval* body = lval_pop(a, 0);
+  lval_del(a);
+
+  return lval_lambda(formals, body);
 }

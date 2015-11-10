@@ -19,13 +19,16 @@ lval* lval_eval_sexpr(lenv* e, lval* v) {
 
   lval* f = lval_pop(v, 0);
   if(f->type != LVAL_FUN) {
-    lval_del(f);
-    lval_del(v);
+    lval* err = lval_err("S-Expression starts with incorrect type. "
+                         "Got %s, expected %s.",
+                         ltype_name(f->type), ltype_name(LVAL_FUN));
 
-    return lval_err("first element is not a function.");
+    lval_del(f); lval_del(v);
+
+    return err;
   }
 
-  lval* result = f->fun(e, v);
+  lval* result = lval_call(e, f, v);
   lval_del(f);
   return result;
 }
