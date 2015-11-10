@@ -6,6 +6,9 @@ My try of building my own lisp.
 Build
 -----
 
+Install editline from your distribution (including the dev-package, if your
+system uses them).
+
 ```bash
 git clone git@github.com:pimeys/kulli.git
 cd kulli
