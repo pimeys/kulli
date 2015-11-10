@@ -36,4 +36,12 @@ kulli> (def {exp} (\ {x} {* x x}))
 ()
 kulli> (exp 10)
 100
+kulli> (def {list} {1 2 3 4})
+()
+kulli> (head list)
+{1}
+kulli> (tail list)
+{2 3 4}
+kulli> (join list list)
+{1 2 3 4 1 2 3 4}
 ```
