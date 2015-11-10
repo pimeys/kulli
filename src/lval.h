@@ -69,3 +69,4 @@ lval* lval_lambda(lval* formals, lval* body);
 lenv* lenv_copy(lenv* e);
 void lenv_def(lenv* e, lval* k, lval* v);
 lval* lval_call(lenv* e, lval* f, lval* a);
+int lval_eq(lval* x, lval* y);
