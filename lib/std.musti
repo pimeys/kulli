@@ -1,6 +1,7 @@
 (def {nil} {})
 (def {true} 1)
 (def {false} 0)
+(def {otherwise} true)
 
 (def {fun}
   (\ {args body}
@@ -82,4 +83,11 @@
       {foldl f (f a (fst l)) (tail l)}})
 
 (fun {sum l} {foldl (\ {a x} {+ a x}) 0 l})
-(fun {prod l} {foldl (\ {a x} {* a x}) 1 l})
+(fun {product l} {foldl (\ {a x} {* a x}) 1 l})
+
+(fun {select & cs}
+     {if (== cs nil)
+      {error "No Selection Found"}
+      {if (fst (fst cs))
+       {snd (fst cs)}
+       {curry select (tail cs)}}})
