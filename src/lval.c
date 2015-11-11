@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <inttypes.h>
 
 #include "lval.h"
 #include "builtin_functions.h"
@@ -254,7 +255,7 @@ void lval_expr_print(const lval *v, char open, char close) {
 void lval_print(lval* v) {
   switch (v->type) {
   case LVAL_NUM:
-    printf("%li", v->num); break;
+    printf("%" PRId64, v->num); break;
   case LVAL_ERR:
     printf("Error: %s", v->err); break;
   case LVAL_SYM:
