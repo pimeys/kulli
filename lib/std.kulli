@@ -1,3 +1,15 @@
+(def {nil} {})
+(def {true} 1)
+(def {false} 0)
+
 (def {fun}
   (\ {args body}
      {def (head args) (\ (tail args) body)}))
+
+(fun {unpack f l}
+     {eval (join (list f) l)})
+
+(fun {pack f & xs} {f xs})
+
+(def {curry} unpack)
+(def {uncurry} pack)

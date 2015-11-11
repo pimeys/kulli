@@ -7,4 +7,5 @@ add_executable(kulli src/builtin_functions src/eval src/lval src/main src/mpc)
 
 target_link_libraries(kulli -ledit -lm)
 file(GLOB STD_KULLI "lib/*.kulli")
+file(REMOVE "./lib/*.kulli")
 file(COPY ${STD_KULLI} DESTINATION "./lib")
