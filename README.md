@@ -35,16 +35,20 @@ musti> (def {x y} 1 2)
 ()
 musti> (+ x y)
 3
-musti> (def {exp} (\ {x} {* x x}))
+musti> ((\ {a b} {* a b (+ a b)}) 1 2)
+6
+musti> (fun {fact n} {if (== n 0) {1} {* n (fact (- n 1))}})
 ()
-musti> (exp 10)
-100
-musti> (def {list} {1 2 3 4})
+musti> fact 10
+3628800
+musti> (def {l} (list 1 2 3 4))
 ()
-musti> (head list)
+musti> l
+{1 2 3 4}
+musti> (head l)
 {1}
-musti> (tail list)
+musti> (tail l)
 {2 3 4}
-musti> (join list list)
+musti> (join l l)
 {1 2 3 4 1 2 3 4}
 ```
