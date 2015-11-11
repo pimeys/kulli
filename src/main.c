@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
   Expr     = mpc_new("expr");
   String   = mpc_new("string");
   Comment  = mpc_new("comment");
-  Kulli    = mpc_new("kulli");
+  Musti    = mpc_new("musti");
 
   char* syntax = "                                                                  \
         number   : /-?[0-9]+/ ;                                                     \
@@ -37,29 +37,29 @@ int main(int argc, char** argv) {
         sexpr    : '(' <expr>* ')' ;                                                \
         qexpr    : '{' <expr>* '}' ;                                                \
         expr     : <number> | <symbol> | <string> | <sexpr> | <qexpr> | <comment> ; \
-        kulli    : /^/ <expr>* /$/ ;                                                \
+        musti    : /^/ <expr>* /$/ ;                                                \
       ";
 
   mpca_lang(MPCA_LANG_DEFAULT, syntax,
             Number, Symbol, Comment, String,
-            Sexpr, Qexpr, Expr, Kulli);
+            Sexpr, Qexpr, Expr, Musti);
 
   lenv* e = lenv_new();
   lenv_add_builtins(e);
-  load_lib("./lib/std.kulli", e);
+  load_lib("./lib/std.musti", e);
 
   if (argc == 1) {
-    puts("Kulli Version 0.0.0.0.1");
+    puts("Musti Version 0.2");
     puts("Press Ctrl+d to exit\n");
 
     while (1) {
-      char* input = readline("kulli> ");
+      char* input = readline("musti> ");
       if (!input) break;
       add_history(input);
 
       mpc_result_t r;
 
-      if (mpc_parse("<stdin>", input, Kulli, &r)) {
+      if (mpc_parse("<stdin>", input, Musti, &r)) {
         lval* result = lval_eval(e, lval_read(r.output));
 
         lval_println(result);
@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
 
   lenv_del(e);
 
-  mpc_cleanup(8, Number, Symbol, Comment, String, Sexpr, Qexpr, Expr, Kulli);
+  mpc_cleanup(8, Number, Symbol, Comment, String, Sexpr, Qexpr, Expr, Musti);
 
   return 0;
 }

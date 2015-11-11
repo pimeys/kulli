@@ -274,7 +274,7 @@ lval* builtin_load(lenv* e, lval* a) {
   LCHECK_TYPE("load", a, 0, LVAL_STR);
 
   mpc_result_t r;
-  if (mpc_parse_contents(a->cell[0]->str, Kulli, &r)) {
+  if (mpc_parse_contents(a->cell[0]->str, Musti, &r)) {
     lval* expr = lval_read(r.output);
     mpc_ast_delete(r.output);
 

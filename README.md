@@ -1,4 +1,4 @@
-Kulli
+Musti
 =====
 
 My try of building my own lisp.
@@ -10,8 +10,8 @@ Install editline from your distribution (including the dev-package, if your
 system uses them).
 
 ```bash
-git clone git@github.com:pimeys/kulli.git
-cd kulli
+git clone git@github.com:pimeys/musti.git
+cd musti
 mkdir build
 cd build
 cmake ..
@@ -22,29 +22,29 @@ Running
 -------
 
 ```bash
-./kulli
+./musti
 ```
 
 Some functionality
 ------------------
 
 ```lisp
-kulli> (+ 1 2 (* 3 4))
+musti> (+ 1 2 (* 3 4))
 15
-kulli> (def {x y} 1 2)
+musti> (def {x y} 1 2)
 ()
-kulli> (+ x y)
+musti> (+ x y)
 3
-kulli> (def {exp} (\ {x} {* x x}))
+musti> (def {exp} (\ {x} {* x x}))
 ()
-kulli> (exp 10)
+musti> (exp 10)
 100
-kulli> (def {list} {1 2 3 4})
+musti> (def {list} {1 2 3 4})
 ()
-kulli> (head list)
+musti> (head list)
 {1}
-kulli> (tail list)
+musti> (tail list)
 {2 3 4}
-kulli> (join list list)
+musti> (join list list)
 {1 2 3 4 1 2 3 4}
 ```

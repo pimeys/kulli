@@ -9,4 +9,4 @@ mpc_parser_t* Qexpr;
 mpc_parser_t* Expr;
 mpc_parser_t* String;
 mpc_parser_t* Comment;
-mpc_parser_t* Kulli;
+mpc_parser_t* Musti;
