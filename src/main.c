@@ -14,18 +14,21 @@ int main(int argc, char** argv) {
   mpc_parser_t* Qexpr    = mpc_new("qexpr");
   mpc_parser_t* Expr     = mpc_new("expr");
   mpc_parser_t* String   = mpc_new("string");
+  mpc_parser_t* Comment  = mpc_new("comment");
   mpc_parser_t* Kulli    = mpc_new("kulli");
 
   mpca_lang(MPCA_LANG_DEFAULT,
       "                                                                 \
         number   : /-?[0-9]+/ ;                                         \
         symbol   : /[a-zA-Z0-9_+%\\-*\\/\\\\=<>!&]+/ ;                  \
+        comment  : /;[^\\r\\n]*/                                        \
         string   : /\"(\\\\.|[^\"])*\"/ ;                               \
         sexpr    : '(' <expr>* ')' ;                                    \
         qexpr    : '{' <expr>* '}' ;                                    \
-        expr     : <number> | <symbol> | <string> | <sexpr> | <qexpr> ; \
+        expr     : <number> | <symbol> | <string> | <sexpr> | <qexpr>   \
+                 | <comment>                                            \
         kulli    : /^/ <expr>* /$/ ;                                    \
-      ", Number, Symbol, String, Sexpr, Qexpr, Expr, Kulli);
+      ", Number, Symbol, Comment, String, Sexpr, Qexpr, Expr, Kulli);
 
   puts("Kulli Version 0.0.0.0.1");
   puts("Press Ctrl+d to exit\n");
@@ -57,7 +60,7 @@ int main(int argc, char** argv) {
 
   lenv_del(e);
 
-  mpc_cleanup(7, Number, Symbol, String, Sexpr, Qexpr, Expr, Kulli);
+  mpc_cleanup(7, Number, Symbol, Comment, String, Sexpr, Qexpr, Expr, Kulli);
 
   return 0;
 }
