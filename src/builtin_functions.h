@@ -1,6 +1,7 @@
 #pragma once
 
 #include "lval.h"
+#include "eval.h"
 
 lval* builtin_sum(lenv* e, lval* a);
 lval* builtin_sub(lenv* e, lval* a);
@@ -26,4 +27,6 @@ lval* builtin_cmp(lenv* e, lval* a, char* op);
 lval* builtin_eq(lenv* e, lval* a);
 lval* builtin_ne(lenv* e, lval* a);
 lval* builtin_if(lenv* e, lval* a);
-lval* builtin_load(lenv* e, lval* a, mpc_parser_t* p);
+lval* builtin_load(lenv* e, lval* a);
+lval* builtin_print(lenv* e, lval* a);
+lval* builtin_error(lenv* e, lval* a);

@@ -1,3 +1,6 @@
+#include "lang.h"
+#include "builtin_functions.h"
+
 #define LCHECK(args, cond, fmt, ...)                                    \
   do { if (!(cond)) { lval* err = lval_err(fmt, ##__VA_ARGS__); lval_del(args); return err; } } while (0);
 
@@ -14,10 +17,6 @@
 #define LCHECK_NOT_EMPTY(func, args, index)     \
   LCHECK(args, args->cell[index]->count != 0,   \
          "Function '%s' passed {} for argument %i.", func, index);
-
-#include "builtin_functions.h"
-#include "lval.h"
-#include "eval.h"
 
 lval* builtin_sum(lenv* e, lval* a) {
   return builtin_op(e, a, "+");
@@ -270,12 +269,12 @@ lval* builtin_if(lenv* e, lval* a) {
   return x;
 }
 
-lval* builtin_load(lenv* e, lval* a, mpc_parser_t* p) {
+lval* builtin_load(lenv* e, lval* a) {
   LCHECK_NUM("load", a, 1);
   LCHECK_TYPE("load", a, 0, LVAL_STR);
 
   mpc_result_t r;
-  if (mpc_parse_contents(a->cell[0]->str, p, &r)) {
+  if (mpc_parse_contents(a->cell[0]->str, Kulli, &r)) {
     lval* expr = lval_read(r.output);
     mpc_ast_delete(r.output);
 
@@ -299,4 +298,26 @@ lval* builtin_load(lenv* e, lval* a, mpc_parser_t* p) {
 
     return err;
   }
+}
+
+lval* builtin_print(lenv* e, lval* a) {
+  for (int i = 0; i < a->count; i++) {
+    lval_print(a->cell[i]); putchar(' ');
+  }
+
+  putchar('\n');
+  lval_del(a);
+
+  return lval_sexpr();
+}
+
+lval* builtin_error(lenv* e, lval* a) {
+  LCHECK_NUM("error", a, 1);
+  LCHECK_TYPE("error", a, 0, LVAL_STR);
+
+  lval* err = lval_err(a->cell[0]->str);
+
+  lval_del(a);
+
+  return err;
 }

@@ -305,6 +305,9 @@ void lenv_add_builtins(lenv* e) {
   lenv_add_builtin(e, "tail", builtin_tail);
   lenv_add_builtin(e, "eval", builtin_eval);
   lenv_add_builtin(e, "join", builtin_join);
+  lenv_add_builtin(e, "load", builtin_load);
+  lenv_add_builtin(e, "print", builtin_print);
+  lenv_add_builtin(e, "error", builtin_error);
   lenv_add_builtin(e, "if", builtin_if);
   lenv_add_builtin(e, "+", builtin_sum);
   lenv_add_builtin(e, "-", builtin_sub);

@@ -1,3 +1,4 @@
+#include "lang.h"
 #include "mpc.h"
 #include "lval.h"
 #include "builtin_functions.h"
@@ -7,9 +8,9 @@
 #include <stdlib.h>
 #include <editline/readline.h>
 
-void load_lib(char* f, mpc_parser_t* p, lenv* e) {
+void load_lib(char* f, lenv* e) {
   lval* args = lval_add(lval_sexpr(), lval_str(f));
-  lval* x = builtin_load(e, args, p);
+  lval* x = builtin_load(e, args);
 
   if (x->type == LVAL_ERR) {
     lval_println(x);
@@ -19,17 +20,16 @@ void load_lib(char* f, mpc_parser_t* p, lenv* e) {
 }
 
 int main(int argc, char** argv) {
-  mpc_parser_t* Number   = mpc_new("number");
-  mpc_parser_t* Symbol   = mpc_new("symbol");
-  mpc_parser_t* Sexpr    = mpc_new("sexpr");
-  mpc_parser_t* Qexpr    = mpc_new("qexpr");
-  mpc_parser_t* Expr     = mpc_new("expr");
-  mpc_parser_t* String   = mpc_new("string");
-  mpc_parser_t* Comment  = mpc_new("comment");
-  mpc_parser_t* Kulli    = mpc_new("kulli");
+  Number   = mpc_new("number");
+  Symbol   = mpc_new("symbol");
+  Sexpr    = mpc_new("sexpr");
+  Qexpr    = mpc_new("qexpr");
+  Expr     = mpc_new("expr");
+  String   = mpc_new("string");
+  Comment  = mpc_new("comment");
+  Kulli    = mpc_new("kulli");
 
-  mpca_lang(MPCA_LANG_DEFAULT,
-      "                                                                             \
+  char* syntax = "                                                                  \
         number   : /-?[0-9]+/ ;                                                     \
         symbol   : /[a-zA-Z0-9_+%\\-*\\/\\\\=<>!&]+/ ;                              \
         comment  : /;[^\\r\\n]*/ ;                                                  \
@@ -38,11 +38,15 @@ int main(int argc, char** argv) {
         qexpr    : '{' <expr>* '}' ;                                                \
         expr     : <number> | <symbol> | <string> | <sexpr> | <qexpr> | <comment> ; \
         kulli    : /^/ <expr>* /$/ ;                                                \
-      ", Number, Symbol, Comment, String, Sexpr, Qexpr, Expr, Kulli);
+      ";
+
+  mpca_lang(MPCA_LANG_DEFAULT, syntax,
+            Number, Symbol, Comment, String,
+            Sexpr, Qexpr, Expr, Kulli);
 
   lenv* e = lenv_new();
   lenv_add_builtins(e);
-  load_lib("./lib/std.kulli", Kulli, e);
+  load_lib("./lib/std.kulli", e);
 
   if (argc == 1) {
     puts("Kulli Version 0.0.0.0.1");
@@ -73,7 +77,7 @@ int main(int argc, char** argv) {
 
   if (argc >= 2) {
     for (int i = 1; i < argc; i++) {
-      load_lib(argv[i], Kulli, e);
+      load_lib(argv[i], e);
     }
   }
 
