@@ -1,0 +1,3 @@
+(def {fun}
+  (\ {args body}
+    {def (head args) (\ (tail args) body)}))

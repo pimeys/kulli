@@ -26,3 +26,4 @@ lval* builtin_cmp(lenv* e, lval* a, char* op);
 lval* builtin_eq(lenv* e, lval* a);
 lval* builtin_ne(lenv* e, lval* a);
 lval* builtin_if(lenv* e, lval* a);
+lval* builtin_load(lenv* e, lval* a, mpc_parser_t* p);
