@@ -13,3 +13,73 @@
 
 (def {curry} unpack)
 (def {uncurry} pack)
+
+(fun {do & l}
+     {if (== l nil)
+      {nil}
+      {last l}})
+
+(fun {let b}
+     {((\ {_} b) ())})
+
+(fun {not x} {- 1 x})
+(fun {or x y} {+ x y})
+(fun {and x y} {* x y })
+
+(fun {flip f a b} {f b a})
+(fun {comp f g x} {f (g x)})
+
+(fun {fst l} {eval (head l)})
+(fun {snd l} {eval (head (tail l))})
+(fun {trd l} {eval (head (tail (tail l)))})
+
+(fun {nth n l}
+     {if (== n 0)
+      {fst l}
+      {nth (- n 1) (tail l)}})
+
+(fun {take n l}
+     {if (== n 0)
+      {nil}
+      {join (head l) (take (- n 1) (tail l))}})
+
+(fun {drop n l}
+     {if (== n 0)
+      {l}
+      {drop (- n 1) (tail l)}})
+
+(fun {split n l}
+     {list (take n l) (drop n l)})
+
+(fun {elem x l}
+     {if (== l nil)
+      {false}
+      {if (== x (fst l)) {true} {elem x (tail l)}}})
+
+(fun {len l}
+     {if (== l nil)
+      {0}
+      {+ 1 (len (tail l))}})
+
+(fun {last l}
+     {nth (- (len l) 1) l})
+
+(fun {map f l}
+     {if (== l nil)
+      {nil}
+      {join (list (f (fst l))) (map f (tail l))}})
+
+(fun {filter f l}
+     {if (== l nil)
+      {nil}
+     {if (f (fst l))
+      {join (head l) (filter f (tail l))}
+      {filter f (tail l)}}})
+
+(fun {foldl f a l}
+     {if (== l nil)
+      {a}
+      {foldl f (f a (fst l)) (tail l)}})
+
+(fun {sum l} {foldl (\ {a x} {+ a x}) 0 l})
+(fun {prod l} {foldl (\ {a x} {* a x}) 1 l})

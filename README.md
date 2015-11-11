@@ -1,7 +1,10 @@
 Musti
 =====
 
-My try of building my own lisp.
+My try of building my own lisp. Musti is my other cat. This language is for
+him.
+
+![Musti the cat](http://imgur.com/Sgebbgi.jpg)
 
 Build
 -----
